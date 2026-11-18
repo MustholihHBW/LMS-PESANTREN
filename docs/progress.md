@@ -1,7 +1,7 @@
 # Progress Pengerjaan — LMS NUURUSSAADAH
 
 > Terakhir diperbarui: 2026-11-18
-> Status keseluruhan: **CP-0 SELESAI**, siap lanjut CP-1
+> Status keseluruhan: **CP-1 SELESAI**, siap lanjut CP-2
 
 ---
 
@@ -10,7 +10,7 @@
 | CP | Fokus | Status |
 |---|---|---|
 | CP-0 | Inisialisasi proyek | ✅ Selesai |
-| CP-1 | Prisma & database | ⏳ Berikutnya |
+| CP-1 | Prisma & database | ✅ Selesai |
 | CP-2 | Auth & RBAC | ⏳ Belum |
 | CP-3 | Layout dashboard | ⏳ Belum |
 | CP-4 | Kelas & enrollment | ⏳ Belum |
@@ -59,6 +59,51 @@ plugin-dir=C:\Program Files\MariaDB 13.0/lib/plugin
 ```
 DATABASE_URL="mysql://root@localhost:3306/lms_nuurussaadah"
 ```
+
+---
+
+## 3b. Prisma (CP-1)
+
+- Versi: **Prisma 7.10.1** (client & CLI)
+- Alasan turun dari v8: Prisma 8 masih RC dan memakai alur config baru (`contract emit` / `family` / `target`)
+- Driver adapter: `@prisma/adapter-mariadb`
+
+### File
+| File | Isi |
+|---|---|
+| `prisma/schema.prisma` | 12 model + enum `Role`, `SubmissionStatus` |
+| `prisma/migrations/20261118032601_init` | Migrasi awal |
+| `prisma.config.ts` | schema path, migrations path, seed, `datasource.url` |
+| `prisma/seed.ts` | Akun demo + kelas + materi + tugas + kuis |
+| `src/lib/prisma.ts` | Singleton `PrismaClient` dengan adapter MariaDB |
+
+### Konfigurasi penting
+- Prisma 7 tidak memuat `.env` otomatis → `prisma.config.ts` memakai `import "dotenv/config"`.
+- `url` tidak lagi di `schema.prisma`, dipindah ke `datasource.url` di `prisma.config.ts`.
+- Runtime client butuh adapter: `new PrismaClient({ adapter: new PrismaMariaDb(DATABASE_URL) })`.
+
+### Migrasi & seed
+```
+npx prisma migrate dev --name init
+npx prisma generate
+npx prisma db seed
+```
+
+### Akun demo (password semua: `password123`)
+| Role | Email |
+|---|---|
+| Admin | `admin@lms.test` |
+| Guru | `guru@lms.test` |
+| Siswa | `siswa@lms.test` |
+| Siswa | `siswa2@lms.test` |
+
+### Verifikasi data
+| Tabel | Jumlah |
+|---|---|
+| User | 4 |
+| Class | 1 |
+| Quiz | 1 |
+| Question | 2 |
 
 ---
 
@@ -117,12 +162,11 @@ DATABASE_URL="mysql://root@localhost:3306/lms_nuurussaadah"
 
 ---
 
-## 8. Langkah Berikutnya (CP-1)
+## 8. Langkah Berikutnya (CP-2)
 
-1. Install `prisma` + `@prisma/client`.
-2. `prisma init` dan set `DATABASE_URL`.
-3. Tulis `prisma/schema.prisma` (User, Class, Enrollment, Material, Assignment, Submission, Grade, Quiz, Question, Option, QuizAttempt, Answer).
-4. `prisma migrate dev --name init`.
-5. Buat `prisma/seed.ts`.
-6. Buat `src/lib/prisma.ts` (singleton).
-7. Verifikasi dengan `prisma studio`.
+1. Install `next-auth@beta` (Auth.js v5) + `@auth/prisma-adapter` bila diperlukan.
+2. Konfigurasi credentials provider + bcrypt.
+3. Halaman `/login` dengan validasi Zod.
+4. Simpan `role` di session/JWT.
+5. Middleware proteksi route `/admin`, `/guru`, `/siswa`.
+6. Helper `getSession` / `requireRole` di server.
