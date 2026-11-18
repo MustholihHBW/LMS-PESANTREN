@@ -1,0 +1,34 @@
+flowchart TD
+    Start([Mulai]) --> Login[Input email & password]
+    Login --> Valid{Valid?}
+    Valid -- Tidak --> Err[Tampilkan pesan error]
+    Err --> Login
+    Valid -- Ya --> Dash[Dashboard Siswa]
+
+    Dash --> Kelas[Pilih Kelas]
+    Kelas --> Pilih{Pilih Aksi}
+
+    Pilih -- Lihat Materi --> Materi[Unduh/buka materi]
+    Pilih -- Kumpulkan Tugas --> CekDeadline{Sebelum deadline?}
+    CekDeadline -- Tidak --> Tolak[Tolak pengumpulan]
+    CekDeadline -- Ya --> Upload[Upload file/jawaban]
+    Upload --> SimpanSub[Simpan Submission]
+
+    Pilih -- Kerjakan Kuis --> CekWaktu{Waktu tersedia?}
+    CekWaktu -- Tidak --> Tutup[Kuis tidak tersedia]
+    CekWaktu -- Ya --> Kerjakan[Jawab soal + timer berjalan]
+    Kerjakan --> Submit[Submit jawaban]
+    Submit --> AutoScore[Auto-scoring via Prisma]
+    AutoScore --> SimpanSkor[Simpan QuizAttempt + Answer]
+
+    Pilih -- Lihat Nilai --> Nilai[Tampilkan nilai tugas & kuis]
+
+    Materi --> Lagi{Lanjut?}
+    SimpanSub --> Lagi
+    SimpanSkor --> Lagi
+    Nilai --> Lagi
+    Tolak --> Lagi
+    Tutup --> Lagi
+    Lagi -- Ya --> Pilih
+    Lagi -- Tidak --> Logout[Logout]
+    Logout --> End([Selesai])

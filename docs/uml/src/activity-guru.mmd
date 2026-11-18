@@ -1,0 +1,25 @@
+flowchart TD
+    Start([Mulai]) --> Login[Input email & password]
+    Login --> Valid{Valid?}
+    Valid -- Tidak --> Err[Tampilkan pesan error]
+    Err --> Login
+    Valid -- Ya --> Dash[Dashboard Guru]
+    Dash --> Pilih{Pilih Aksi}
+
+    Pilih -- Kelola Materi --> Materi[Buat/Ubah/Hapus materi + upload file]
+    Pilih -- Kelola Tugas --> Tugas[Buat tugas + deadline]
+    Pilih -- Nilai Tugas --> Nilai[Input nilai submission siswa]
+    Pilih -- Kelola Kuis --> Kuis[Buat kuis + soal pilihan ganda + kunci]
+    Pilih -- Lihat Hasil Kuis --> Hasil[Lihat skor & rekap kuis]
+
+    Materi --> Simpan[Simpan ke database via Prisma]
+    Tugas --> Simpan
+    Nilai --> Simpan
+    Kuis --> Simpan
+    Hasil --> Tampil[Tampilkan data]
+
+    Simpan --> Lagi{Lanjut?}
+    Tampil --> Lagi
+    Lagi -- Ya --> Pilih
+    Lagi -- Tidak --> Logout[Logout]
+    Logout --> End([Selesai])

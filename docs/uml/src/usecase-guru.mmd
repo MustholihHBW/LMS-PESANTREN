@@ -1,0 +1,26 @@
+flowchart LR
+    Guru(("Guru"))
+
+    subgraph SISTEM["Sistem LMS"]
+        direction TB
+        Login(["Login"])
+        Logout(["Logout"])
+        Profil(["Lihat Profil"])
+        KelolaKelas(["Kelola Kelas Diampu"])
+        KelolaMateri(["Kelola Materi"])
+        KelolaTugas(["Kelola Tugas"])
+        NilaiTugas(["Nilai Tugas"])
+        KelolaKuis(["Kelola Kuis / UTS"])
+        HasilKuis(["Lihat Hasil Kuis"])
+    end
+
+    Guru --> Login
+    Guru --> Logout
+    Guru --> Profil
+    Guru --> KelolaKelas
+    Guru --> KelolaMateri
+    Guru --> KelolaTugas
+    Guru --> KelolaKuis
+    Guru --> HasilKuis
+
+    KelolaTugas -.->|include| NilaiTugas

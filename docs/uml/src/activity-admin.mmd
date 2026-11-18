@@ -1,0 +1,23 @@
+flowchart TD
+    Start([Mulai]) --> Login[Input email & password]
+    Login --> Valid{Valid?}
+    Valid -- Tidak --> Err[Tampilkan pesan error]
+    Err --> Login
+    Valid -- Ya --> Dash[Dashboard Admin]
+    Dash --> Pilih{Pilih Aksi}
+
+    Pilih -- Kelola Pengguna --> CU[Tambah/Ubah/Hapus user]
+    Pilih -- Kelola Kelas --> CK[Tambah/Ubah/Hapus kelas]
+    Pilih -- Assign Guru --> AG[Tetapkan guru ke kelas]
+    Pilih -- Rekap Nilai --> RN[Lihat rekap nilai per kelas]
+
+    CU --> Simpan[Simpan ke database via Prisma]
+    CK --> Simpan
+    AG --> Simpan
+    RN --> Tampil[Tampilkan data]
+
+    Simpan --> Lagi{Lanjut?}
+    Tampil --> Lagi
+    Lagi -- Ya --> Pilih
+    Lagi -- Tidak --> Logout[Logout]
+    Logout --> End([Selesai])

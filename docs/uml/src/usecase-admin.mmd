@@ -1,0 +1,22 @@
+flowchart LR
+    Admin(("Admin"))
+
+    subgraph SISTEM["Sistem LMS"]
+        direction TB
+        Login(["Login"])
+        Logout(["Logout"])
+        Profil(["Lihat Profil"])
+        KelolaUser(["Kelola Pengguna"])
+        KelolaKelas(["Kelola Kelas"])
+        AssignGuru(["Assign Guru ke Kelas"])
+        RekapNilai(["Lihat Rekap Nilai"])
+    end
+
+    Admin --> Login
+    Admin --> Logout
+    Admin --> Profil
+    Admin --> KelolaUser
+    Admin --> KelolaKelas
+    Admin --> RekapNilai
+
+    KelolaKelas -.->|include| AssignGuru

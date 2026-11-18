@@ -1,0 +1,146 @@
+classDiagram
+    class User {
+        +String id
+        +String name
+        +String email
+        +String password
+        +Role role
+        +DateTime createdAt
+        +login()
+        +logout()
+    }
+
+    class Class {
+        +String id
+        +String name
+        +String description
+        +String teacherId
+        +DateTime createdAt
+        +addStudent()
+        +removeStudent()
+    }
+
+    class Enrollment {
+        +String id
+        +String studentId
+        +String classId
+        +DateTime enrolledAt
+    }
+
+    class Material {
+        +String id
+        +String title
+        +String description
+        +String fileUrl
+        +String classId
+        +DateTime createdAt
+    }
+
+    class Assignment {
+        +String id
+        +String title
+        +String description
+        +DateTime dueDate
+        +String fileUrl
+        +String classId
+        +DateTime createdAt
+    }
+
+    class Submission {
+        +String id
+        +String assignmentId
+        +String studentId
+        +String fileUrl
+        +String content
+        +SubmissionStatus status
+        +DateTime submittedAt
+    }
+
+    class Grade {
+        +String id
+        +String studentId
+        +String classId
+        +String assignmentId
+        +String quizAttemptId
+        +Float score
+        +String feedback
+        +DateTime gradedAt
+        +calculateFinalScore()
+    }
+
+    class Quiz {
+        +String id
+        +String title
+        +String description
+        +Int durationMinutes
+        +DateTime startAt
+        +DateTime endAt
+        +String classId
+        +isOpen()
+    }
+
+    class Question {
+        +String id
+        +String quizId
+        +String text
+        +Int points
+    }
+
+    class Option {
+        +String id
+        +String questionId
+        +String text
+        +Boolean isCorrect
+    }
+
+    class QuizAttempt {
+        +String id
+        +String quizId
+        +String studentId
+        +DateTime startedAt
+        +DateTime submittedAt
+        +Float score
+        +submit()
+        +autoScore()
+    }
+
+    class Answer {
+        +String id
+        +String attemptId
+        +String questionId
+        +String optionId
+        +Boolean isCorrect
+    }
+
+    class Role {
+        <<enumeration>>
+        ADMIN
+        GURU
+        SISWA
+    }
+
+    class SubmissionStatus {
+        <<enumeration>>
+        BELUM
+        TERKUMPUL
+        TERLAMBAT
+    }
+
+    User "1" --> "0..*" Class : mengampu
+    User "1" --> "0..*" Enrollment : enrollment
+    Class "1" --> "0..*" Enrollment : memiliki
+    Class "1" --> "0..*" Material : memiliki
+    Class "1" --> "0..*" Assignment : memiliki
+    Class "1" --> "0..*" Quiz : memiliki
+    Assignment "1" --> "0..*" Submission : memiliki
+    User "1" --> "0..*" Submission : mengumpulkan
+    User "1" --> "0..*" Grade : menerima
+    Class "1" --> "0..*" Grade : memiliki
+    Quiz "1" --> "0..*" Question : berisi
+    Question "1" --> "0..*" Option : memiliki
+    Quiz "1" --> "0..*" QuizAttempt : dikerjakan
+    User "1" --> "0..*" QuizAttempt : mengerjakan
+    QuizAttempt "1" --> "0..*" Answer : berisi
+    Question "1" --> "0..*" Answer : dijawab
+    User --> Role : memiliki
+    Submission --> SubmissionStatus : status

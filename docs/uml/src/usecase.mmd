@@ -1,0 +1,59 @@
+flowchart LR
+    Admin(("Admin"))
+    Guru(("Guru"))
+    Siswa(("Siswa"))
+
+    Login(["Login"])
+    Logout(["Logout"])
+    Profil(["Lihat Profil"])
+
+    KelolaUser(["Kelola Pengguna"])
+    KelolaKelas(["Kelola Kelas"])
+    AssignGuru(["Assign Guru ke Kelas"])
+    RekapNilai(["Lihat Rekap Nilai"])
+
+    GKelolaKelas(["Kelola Kelas Diampu"])
+    GKelolaMateri(["Kelola Materi"])
+    GKelolaTugas(["Kelola Tugas"])
+    GNilaiTugas(["Nilai Tugas"])
+    GKelolaKuis(["Kelola Kuis / UTS"])
+    GHasilKuis(["Lihat Hasil Kuis"])
+
+    SLihatKelas(["Lihat Kelas"])
+    SUnduhMateri(["Unduh Materi"])
+    SKumpulTugas(["Kumpulkan Tugas"])
+    SLihatNilai(["Lihat Nilai"])
+    SKerjakanKuis(["Kerjakan Kuis / UTS"])
+    SLihatHasil(["Lihat Hasil Kuis"])
+
+    Admin --> Login
+    Admin --> Logout
+    Admin --> Profil
+    Admin --> KelolaUser
+    Admin --> KelolaKelas
+    Admin --> AssignGuru
+    Admin --> RekapNilai
+
+    Guru --> Login
+    Guru --> Logout
+    Guru --> Profil
+    Guru --> GKelolaKelas
+    Guru --> GKelolaMateri
+    Guru --> GKelolaTugas
+    Guru --> GNilaiTugas
+    Guru --> GKelolaKuis
+    Guru --> GHasilKuis
+
+    Siswa --> Login
+    Siswa --> Logout
+    Siswa --> Profil
+    Siswa --> SLihatKelas
+    Siswa --> SUnduhMateri
+    Siswa --> SKumpulTugas
+    Siswa --> SLihatNilai
+    Siswa --> SKerjakanKuis
+    Siswa --> SLihatHasil
+
+    KelolaKelas -.->|include| AssignGuru
+    SKumpulTugas -.->|include| Login
+    SKerjakanKuis -.->|include| Login
